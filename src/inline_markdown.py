@@ -1,3 +1,4 @@
+import re
 from textnode import *
 from functools import reduce
 
@@ -26,3 +27,17 @@ def splitter(delimiter, text_type):
         return nodes
     
     return split_node
+
+def extract_markdown_images(text):
+    images = []
+    if text:
+        images = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)    
+    return images
+
+def extract_markdown_links(text):
+    links = []
+    if text:
+        links = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    return links
+
+#(?<!!)\[(.*?)\]\((.*?)\)
