@@ -40,8 +40,27 @@ def extract_markdown_links(text):
         links = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
     return links
 
+def __split_nodes_entites(old_nodes, split_func, starting_pattern, text_type):
+    new_nodes = []
+    for node in old_nodes:
+        text = node.text
+        entities = split_func(text)
+        for entity in entities:
+            new_txt = entity[0]
+            path = entity[1]
+            splitted_text = text.split(f"{starting_pattern}{new_txt}]({path})", 1)
+            if len(splitted_text) != 2:
+                raise ValueError(f"Invalid markdown syntax: {text_type.value()} section not closed")
+            if splitted_text[0]:
+                new_nodes.append(TextNode(splitted_text[0], node.text_type, node.url))
+            new_nodes.append(TextNode(new_txt, text_type, path))
+            text = splitted_text[1]
+        if text:
+            new_nodes.append(TextNode(text, node.text_type, node.url))
+    return new_nodes
+
 def split_nodes_image(old_nodes):
-    pass
+    return __split_nodes_entites(old_nodes, extract_markdown_images, "![", TextType.IMAGE)
 
 def split_nodes_link(old_nodes):
-    pass
+    return __split_nodes_entites(old_nodes, extract_markdown_links, "[", TextType.LINK)
