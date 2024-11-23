@@ -64,3 +64,12 @@ def split_nodes_image(old_nodes):
 
 def split_nodes_link(old_nodes):
     return __split_nodes_entites(old_nodes, extract_markdown_links, "[", TextType.LINK)
+
+def text_to_textnodes(text):
+    main_node = TextNode(text, TextType.TEXT)
+    nodes = split_nodes_image([main_node])
+    nodes = split_nodes_link(nodes)
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "*", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    return nodes
