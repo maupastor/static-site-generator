@@ -53,6 +53,38 @@ class TestSplitBlocks(unittest.TestCase):
         ])
 
 
+class TestBlockTypes(unittest.TestCase):
+    def test_block_type_ehading(self):
+        text = "### This is a heading"
+        self.assertEqual(block_to_block_type(text), "heading")
+    
+    def test_block_type_not_heading(self):
+        text = "####### This is a heading" # seven # characters
+        self.assertNotEqual(block_to_block_type(text), "heading")
+    
+    def test_block_type_code(self):
+        text = "``` This is a code block!! ```"
+        self.assertEqual(block_to_block_type(text), "code")
+    
+    def test_block_type_quote(self):
+        text = ("> First quote\n"
+                "> Second quote\n"
+                "> Third quote")
+        self.assertEqual(block_to_block_type(text), "quote")
+    
+    def test_block_type_unordered_list(self):
+        text = ("* First element of unordered list\n"
+                "* Second element of unordered list\n"
+                "* Third element of unordered list")
+        self.assertEqual(block_to_block_type(text), "unordered list")
+    
+    def test_block_type_unordered_list2(self):
+        text = ("- First element of unordered list\n"
+                "- Second element of unordered list\n"
+                "- Third element of unordered list")
+        self.assertEqual(block_to_block_type(text), "unordered list")
+
+
 
 if __name__ == "__main__":
     unittest.main()
