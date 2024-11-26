@@ -83,6 +83,22 @@ class TestBlockTypes(unittest.TestCase):
                 "- Second element of unordered list\n"
                 "- Third element of unordered list")
         self.assertEqual(block_to_block_type(text), "unordered list")
+    
+    def test_block_type_not_unordered_list(self):
+        text = ("- First element of unordered list\n"
+                "* Second element of unordered list\n"
+                "- Third element of unordered list")
+        self.assertNotEqual(block_to_block_type(text), "unordered list")
+    
+    def test_block_type_ordered_list(self):
+        text = ("1. First element of ordered list\n"
+                "2. Second element of ordered list\n"
+                "3. Third element of ordered list")
+        self.assertEqual(block_to_block_type(text), "ordered list")
+    
+    def test_block_type_paragraph(self):
+        text = ("This is a paragraph!!")
+        self.assertEqual(block_to_block_type(text), "paragraph")
 
 
 
