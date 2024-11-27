@@ -16,9 +16,9 @@ def block_to_block_type(text):
     if __all_lines_startwith(">", lines):
         return "quote"
     if __all_lines_startwith("* ", lines) or __all_lines_startwith("- ", lines):
-        return "unordered list"
+        return "unordered_list"
     if __is_ordered_list(lines):
-        return "ordered list"
+        return "ordered_list"
     return "paragraph"
 
 def __all_lines_startwith(chars, lines):
