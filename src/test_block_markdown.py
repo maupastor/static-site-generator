@@ -99,6 +99,115 @@ class TestBlockTypes(unittest.TestCase):
     def test_block_type_paragraph(self):
         text = ("This is a paragraph!!")
         self.assertEqual(block_to_block_type(text), "paragraph")
+    
+
+class TestMarkdownToHtmlNodes(unittest.TestCase):    
+
+    def test_convert_paragraph(self):
+
+        markdown = (
+            "This is a paragraph of text. It has some **bold** and *italic* words inside of it."
+        )
+        expected = (
+            "<div><p>"
+            "This is a paragraph of text. It has some <b>bold</b> and <i>italic</i> words inside of it."
+            "</p></div>"
+        )
+
+        html_node = markdown_to_html_node(markdown)
+
+        self.assertEqual(html_node.to_html(), expected)
+    
+
+    def test_convert_headings(self):
+
+        markdown = (
+            "# This is a h1 heading\n\n"
+            "### This is a h3 heading\n\n"
+            "###### This is a h6 heading"
+        )
+        expected = (
+            "<div>"
+            "<h1>This is a h1 heading</h1>"
+            "<h3>This is a h3 heading</h3>"
+            "<h6>This is a h6 heading</h6>"
+            "</div>"
+        )
+
+        html_node = markdown_to_html_node(markdown)
+
+        self.assertEqual(html_node.to_html(), expected)
+    
+
+    def test_convert_unordered_list(self):
+
+        markdown = (
+            "* This is the first list item in a list block\n"
+            "* This is a **bold** list item\n"
+            "* This is another list item"
+        )
+        expected = (
+            "<div><ul>"
+            "<li>This is the first list item in a list block</li>"
+            "<li>This is a <b>bold</b> list item</li>"
+            "<li>This is another list item</li>"
+            "</ul></div>"
+        )
+
+        html_node = markdown_to_html_node(markdown)
+
+        self.assertEqual(html_node.to_html(), expected)
+    
+
+    def test_convert_ordered_list(self):
+
+        markdown = (
+            "1. First item of ordered list\n"
+            "2. Second item of *ordered* list\n"
+            "3. Third item of ordered list"
+        )
+        expected = (
+            "<div><ol>"
+            "<li>First item of ordered list</li>"
+            "<li>Second item of <i>ordered</i> list</li>"
+            "<li>Third item of ordered list</li>"
+            "</ol></div>"
+        )
+
+        html_node = markdown_to_html_node(markdown)
+
+        self.assertEqual(html_node.to_html(), expected)
+    
+
+    def test_convert_code(self):
+
+        markdown = (
+            "``` This is a code block!! ```"
+        )
+        expected = (
+            "<div><pre><code> This is a code block!! </code></pre></div>"
+        )
+
+        html_node = markdown_to_html_node(markdown)
+
+        self.assertEqual(html_node.to_html(), expected)
+    
+    def test_convert_quote(self):
+
+        markdown = (
+            "> This is the first line of a quote\n"
+            "> This is the second line of a quote"
+        )
+        expected = (
+            "<div><blockquote>"
+            " This is the first line of a quote\n"
+            " This is the second line of a quote"
+            "</blockquote></div>"
+        )
+
+        html_node = markdown_to_html_node(markdown)
+
+        self.assertEqual(html_node.to_html(), expected)
 
 
 
