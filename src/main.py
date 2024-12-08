@@ -1,8 +1,10 @@
-from textnode import *
+from copy_static import copy_static_resources
+
+path_static_resources = "./static/"
+path_public_resources = "./public/"
 
 def main():
-    text_node = TextNode("This is a text node", TextType.BOLD, "https://www.boot.dev")
-    print(text_node)
+    copy_static_resources(path_static_resources, path_public_resources)
 
 
 main()
