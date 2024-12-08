@@ -76,10 +76,11 @@ def __block_to_htmlnode(block):
     if block_type == "code":
         tag = "pre"
         text = block.removeprefix("```").removesuffix("```")
-        children = text_to_children(text)
+        children = text_to_children(text.strip())
         children = [ParentNode("code", children)]
     if block_type == "quote":
         formatted_text = __remove_lines_prefix(block, ">")
+        formatted_text = formatted_text.strip()
         tag = "blockquote"
         children = text_to_children(formatted_text)
 
